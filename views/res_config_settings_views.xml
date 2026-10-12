@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="res_config_settings_view_form" model="ir.ui.view">
+        <field name="name">res.config.settings.view.form.inherit.ai_ollama</field>
+        <field name="model">res.config.settings</field>
+        <field name="inherit_id" ref="base_setup.res_config_settings_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//block[@name='integration']" position="after">
+                <block title="AI Provider" name="ai_ollama_setting_container">
+                    <setting id="ai_ollama_provider" string="AI Provider"
+                             help="Changing the provider re-indexes all the AI sources">
+                        <field name="ai_ollama_provider" widget="radio" class="o_light_label"/>
+                    </setting>
+                    <setting id="ai_ollama_server" string="Ollama Server" invisible="ai_ollama_provider != 'ollama'"
+                             help="OpenAI-compatible server (Ollama, llama.cpp, vLLM, LM Studio...) used instead of Odoo AI">
+                        <div class="content-group">
+                            <div class="row mt8">
+                                <label for="ai_ollama_endpoint" class="col-lg-4 o_light_label"/>
+                                <field name="ai_ollama_endpoint" placeholder="http://localhost:11434/v1"/>
+                            </div>
+                            <div class="row">
+                                <label for="ai_ollama_api_key" class="col-lg-4 o_light_label"/>
+                                <field name="ai_ollama_api_key" password="True"/>
+                            </div>
+                            <div class="row">
+                                <label for="ai_ollama_timeout" class="col-lg-4 o_light_label"/>
+                                <field name="ai_ollama_timeout"/>
+                            </div>
+                        </div>
+                    </setting>
+                    <setting id="ai_ollama_models" string="Models" invisible="ai_ollama_provider != 'ollama'"
+                             help="Changing the embedding model re-indexes all the AI sources">
+                        <div class="content-group">
+                            <div class="row mt8">
+                                <label for="ai_ollama_chat_model" class="col-lg-4 o_light_label"/>
+                                <field name="ai_ollama_chat_model" placeholder="gemma4:e4b"/>
+                            </div>
+                            <div class="row">
+                                <label for="ai_ollama_embedding_model" class="col-lg-4 o_light_label"/>
+                                <field name="ai_ollama_embedding_model" placeholder="qwen3-embedding:0.6b"/>
+                            </div>
+                            <div class="row">
+                                <label for="ai_ollama_context_length" class="col-lg-4 o_light_label"/>
+                                <field name="ai_ollama_context_length" placeholder="16384"/>
+                            </div>
+                            <div class="text-muted">
+                                Must match the context size of the server (e.g. OLLAMA_CONTEXT_LENGTH):
+                                longer conversations are shortened to fit in it.
+                            </div>
+                        </div>
+                    </setting>
+                </block>
+            </xpath>
+        </field>
+    </record>
+</odoo>
